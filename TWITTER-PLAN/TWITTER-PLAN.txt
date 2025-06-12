@@ -1,0 +1,129 @@
+🔜 What to Build Next:
+1. User Profile Page
+Display name, username (handle), email, bio, profile picture.
+
+Add/edit profile functionality.
+
+Add a route like /profile/:username.
+
+2. Post a Tweet
+Create a form to post a tweet (text only for now).
+
+Limit tweet to 280 characters.
+
+Save to MongoDB with user reference and timestamp.
+
+Show tweet on home/feed.
+
+3. Tweets Feed
+Fetch and display tweets in reverse chronological order.
+
+Show who posted it, when, and the tweet content.
+
+Allow likes (you can store liked user IDs in an array).
+
+4. Like / Unlike Tweet
+Add a like button to each tweet.
+
+Update like count in real-time (bonus: optimistic UI).
+
+5. Follow / Unfollow Users
+Add buttons to follow/unfollow on user profile pages.
+
+Update followers/following count.
+
+Show tweets from followed users only in feed.
+
+6. Logout
+Simple token removal + redirect to login.
+
+🧪 Bonus (After Core Is Working)
+🧵 Threaded tweets (replies).
+
+🔍 Search bar for users or tweets.
+
+📸 Tweet with image (Multer for file uploads).
+
+🕵️‍♂️ Protected routes and middleware (for APIs).
+
+💬 Real-time notifications with Socket.IO.
+
+Suggested Order to Build:
+Profile Page
+
+Post Tweet
+
+Feed Page
+
+Like/Unlike
+
+Follow/Unfollow
+
+Logout
+
+Bonus features
+
+Let me know if you want a database schema suggestion or code structure idea for the next feature.
+
+
+
+---------------------------------11 Jun
+🧭 What You Should Build Next:
+🔹 1. User Profile Page (Start today)
+This is the natural next step, as every feature ahead (tweeting, following, feeds) needs a user identity.
+
+🛠️ Step-by-Step Breakdown:
+📁 Backend (Node/Express + MongoDB):
+User Schema – Add fields if not already:
+
+js
+Copy
+Edit
+{
+  name,
+  email,
+  username, // unique
+  bio,
+  profilePicture, // optional
+  followers: [],  // array of user IDs
+  following: []   // array of user IDs
+}
+Routes:
+
+GET /api/users/:username – Fetch user profile
+
+PUT /api/users/:id – Update profile (name, bio, etc.)
+
+🎨 Frontend (React):
+Route: /profile/:username
+
+Page Layout:
+
+Show: Name, Username, Email, Bio, Profile Picture
+
+Add: “Edit Profile” (if current user)
+
+Edit Profile Form:
+
+Modal or separate page
+
+Update name, bio, profile picture
+
+🔐 Bonus:
+Use the JWT token to identify the logged-in user and only allow them to edit their own profile.
+
+📌 Optional Enhancements:
+Allow uploading profile picture (Multer + Cloudinary)
+
+Add username uniqueness check
+
+Auto-generate usernames during signup (e.g., @nishant123)
+
+
+
+
+
+
+
+
+
