@@ -19,14 +19,13 @@ const login = async (req, res) => {
       { email: user.email, id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
-    );
-
-    res.status(200).json({
+    );    res.status(200).json({
       message: "Login Success",
       success: true,
       jwtToken,
       email,
       name: user.name,
+      username: user.username,
     });
   } catch (error) {
     res.status(500).json({

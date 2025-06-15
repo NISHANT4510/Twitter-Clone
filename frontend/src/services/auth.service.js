@@ -7,6 +7,19 @@ const signupUser = async (userData) => {
     console.log('Signup request data:', userData);
     const response = await api.post(`${AUTH_URL}/signup`, userData);
     console.log('Signup response:', response.data);
+    
+    // Initialize user in localStorage after successful signup
+    // This helps with immediate profile access after signup
+    if (response.data.success) {
+      localStorage.setItem('userProfile', JSON.stringify({
+        name: userData.name,
+        email: userData.email,
+        username: userData.email.split('@')[0], // Use email prefix as default username
+        bio: '',
+        website: '',
+        profilePicture: ''
+      }));
+    }
     return response.data;
   } catch (error) {
     console.error('Signup error full:', error);
@@ -28,14 +41,15 @@ const signupUser = async (userData) => {
 
 const loginUser = async (credentials) => {
   try {
-    const response = await api.post(`${AUTH_URL}/login`, credentials);
-    
-    // Save token and user data to localStorage
+    const response = await api.post(`${AUTH_URL}/login`, credentials);      // Save token and user data to localStorage
     if (response.data.jwtToken) {
-      localStorage.setItem('token', response.data.jwtToken);
-      localStorage.setItem('user', JSON.stringify({
+      localStorage.setItem('token', response.data.jwtToken);      localStorage.setItem('user', JSON.stringify({
+        id: response.data.id || response.data._id, // Store the user ID (support both formats)
+        _id: response.data.id || response.data._id, // Store as _id as well for consistency
         name: response.data.name,
-        email: response.data.email
+        email: response.data.email,
+        username: response.data.username || response.data.email, // Use email as username if not provided
+        profilePicture: response.data.profilePicture || ''
       }));
     }
     
@@ -52,6 +66,9 @@ const loginUser = async (credentials) => {
 const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+  // Remove any other user-related data that might be stored
+  localStorage.removeItem('userProfile');
+  console.log('Auth service: Logged out, cleared localStorage');
 };
 
 const getCurrentUser = () => {

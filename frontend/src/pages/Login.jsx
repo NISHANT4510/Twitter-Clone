@@ -31,14 +31,43 @@ const Login = () => {
       [name]: value
     });
   };
-
+  // Check if this login is after a new signup
+  const [newSignupInfo, setNewSignupInfo] = useState(null);
+  
+  useEffect(() => {
+    // Check if there's new signup data in localStorage
+    const signupData = localStorage.getItem('newSignup');
+    if (signupData) {
+      const parsed = JSON.parse(signupData);
+      setNewSignupInfo(parsed);
+      
+      // Pre-fill email if it exists
+      if (parsed.email) {
+        setFormData(prevData => ({
+          ...prevData,
+          email: parsed.email
+        }));
+      }
+      
+      // Clear the temporary data
+      localStorage.removeItem('newSignup');
+    }
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     setShowError(false);
     
     try {
-      await dispatch(login(formData)).unwrap();
-      navigate('/home');
+      const result = await dispatch(login(formData)).unwrap();
+      
+      // If this login immediately follows a signup and profile doesn't exist yet
+      if (newSignupInfo && newSignupInfo.email === formData.email) {
+        // Navigate to profile page to complete setup
+        navigate('/profile');
+      } else {
+        // Otherwise, go to home page
+        navigate('/home');
+      }
     } catch (err) {
       setShowError(true);
     }

@@ -2,12 +2,21 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import authService from "../services/auth.service";
 
 // Get user from localStorage to maintain state across refreshes
-const user = JSON.parse(localStorage.getItem("user"));
-const token = localStorage.getItem("token");
+const user = JSON.parse(localStorage.getItem("user")) || null;
+const token = localStorage.getItem("token") || null;
 
+// Log the initial auth state from localStorage
+console.log("Auth State Initialization:", {
+  hasToken: !!token,
+  hasUser: !!user,
+  tokenValue: token ? "Token exists" : "No token"
+});
+
+// Ensure we have a properly initialized state
 const initialState = {
-  isAuthenticated: !!token,
-  user: user || null,
+  isAuthenticated: !!token, // Convert token to boolean
+  user: user,
+  token: token,
   isLoading: false,
   error: null,
 };
@@ -52,6 +61,12 @@ const authSlice = createSlice({
     clearError: (state) => {
       state.error = null;
     },
+    updateUserData: (state, action) => {
+      state.user = {
+        ...state.user,
+        ...action.payload
+      };
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -59,15 +74,24 @@ const authSlice = createSlice({
       .addCase(login.pending, (state) => {
         state.isLoading = true;
         state.error = null;
-      })
-      .addCase(login.fulfilled, (state, action) => {
+      })      .addCase(login.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isAuthenticated = true;
+        state.token = action.payload.jwtToken || localStorage.getItem('token');
         state.user = {
+          id: action.payload.id || action.payload._id,
+          _id: action.payload.id || action.payload._id,
           name: action.payload.name,
           email: action.payload.email,
+          username: action.payload.username || action.payload.email
         };
         state.error = null;
+        console.log('Login successful, user authenticated:', state.isAuthenticated);
+        console.log('Auth state after login:', {
+          isAuthenticated: state.isAuthenticated,
+          hasUser: !!state.user,
+          hasToken: !!state.token
+        });
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false;
@@ -85,14 +109,15 @@ const authSlice = createSlice({
       .addCase(signup.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.payload;
-      })
-      // Logout
+      })      // Logout
       .addCase(logout.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.user = null;
+        state.token = null;
+        console.log('Logout successful, auth state cleared');
       });
   },
 });
 
-export const { clearError } = authSlice.actions;
+export const { clearError, updateUserData } = authSlice.actions;
 export default authSlice.reducer;

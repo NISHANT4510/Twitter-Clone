@@ -1,17 +1,79 @@
 @import "tailwindcss";
 
+/* Global styles for better text visibility */
+.text-primary {
+  color: #121212 !important; /* Darker for better visibility */
+}
+
+.text-secondary {
+  color: #333333 !important; /* Darker for better visibility */
+}
+
+.text-muted {
+  color: #555555 !important; /* Darker for better visibility */
+}
+
+.bg-card {
+  background-color: #ffffff;
+}
+
+.bg-main {
+  background-color: #f7fafc;
+}
+
+/* Improve contrast for input text */
+input, textarea {
+  color: #121212; /* Darker for better visibility */
+}
+
+/* Better link colors */
+a {
+  color: #2563eb; /* Brighter blue for better contrast */
+  font-weight: 500;
+}
+
+a:hover {
+  color: #1d4ed8; /* Darker blue on hover */
+  text-decoration: underline;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #c7bbbb;
+  color: #121212; /* Much darker text for better visibility */
+  background-color: #f5f5f5; /* Light background */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Additional visibility improvements */
+.text-white {
+  color: #ffffff !important; /* Force white text to stay white */
+}
+
+/* Improve text contrast in various areas */
+.text-gray-500 {
+  color: #4b5563 !important; /* Darker gray for better visibility */
+}
+
+.text-gray-600, .text-gray-700 {
+  color: #374151 !important; /* Darker gray for better visibility */
+}
+
+/* Improve button text visibility */
+button {
+  font-weight: 500; /* Slightly bolder text for buttons */
+}
+
+/* Add better focus states for accessibility */
+:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
 }
 

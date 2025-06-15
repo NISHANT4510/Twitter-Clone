@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { signup, clearError } from "../redux/authSlice";
 import { Link, useNavigate } from "react-router-dom";
@@ -40,16 +40,22 @@ const Signup = () => {
     setSuccessMessage("");
 
     try {
-      console.log("Submitting form data:", formData);
-      const result = await dispatch(signup(formData)).unwrap();
+      console.log("Submitting form data:", formData);      const result = await dispatch(signup(formData)).unwrap();
       console.log("Signup result:", result);
-      setSuccessMessage("Signup successful! You can now login.");
+      setSuccessMessage("Signup successful! You will be redirected to login.");
       // Reset form
       setFormData({
         name: "",
         email: "",
         password: "",
       });
+      
+      // Store user profile data temporarily 
+      localStorage.setItem('newSignup', JSON.stringify({
+        name: formData.name,
+        email: formData.email
+      }));
+      
       // Redirect to login after 2 seconds
       setTimeout(() => {
         navigate("/login");

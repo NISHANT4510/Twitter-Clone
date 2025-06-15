@@ -20,14 +20,25 @@ const userSchema = new Schema({
         type : String,
         required : true
     },
-    bio:{
-        type:String,
-        default:''
+    bio: {
+        type: String,
+        default: ''
     },
-    profilePicture:{
-        type:String,
-        default:''
-    }
+    website: {
+        type: String,
+        default: ''
+    },    profilePicture: {
+        type: String,
+        default: ''
+    },
+    followers: [{
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+    }],
+    following: [{
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+    }]
 })
  
 const UserModel = mongoose.model('users', userSchema);
